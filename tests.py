@@ -62,8 +62,7 @@ class CommandlineTest(unittest.TestCase):
     def test_html(self):
         self.assertRun(
             'curl -s http://localhost:{PORT}/',
-            [r'Peter Kerpedjiev', r'Harvard Medical School',
-             r'HiGlass is a tool for exploring']
+            [r'need to enable']
         )
 
     def test_admin(self):
