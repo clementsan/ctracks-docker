@@ -2,8 +2,8 @@
 set -e
 
 STAMP='default'
-SERVER_VERSION='1.3.0'
-CTRACKS_VERSION='0.1.8'
+SERVER_VERSION='1.3.1'
+CTRACKS_VERSION='0.1.10'
 # LIBRARY_VERSION='0.9.4' # this will be specified in the CTRACKS_LIBRARY
 
 usage() {
@@ -37,6 +37,8 @@ perl -pne "s/<SERVER_VERSION>/$SERVER_VERSION/g; s/<CTRACKS_VERSION>/$CTRACKS_VE
 
 REPO=visdesignlab/ctracks
 # docker pull $REPO # Defaults to "latest", but just speeds up the build, so precise version doesn't matter.
+# docker pull $REPO # Defaults to "latest", but just speeds up the build, so precise version doesn't matter.
+#--cache-from $REPO \
 docker build --build-arg WORKERS=$WORKERS \
              --tag image-$STAMP \
              web-context

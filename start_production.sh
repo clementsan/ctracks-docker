@@ -5,7 +5,7 @@ set -v
 # Docker image is pinned here, so that you can checkout older
 # versions of this script, and get reproducible deployments.
 DOCKER_VERSION=v0.0.18
-IMAGE=gehlenborglab/higlass:$DOCKER_VERSION
+IMAGE=visdesignlab/ctracks:$DOCKER_VERSION
 STAMP=`date +"%Y-%m-%d_%H-%M-%S"`
 PORT=0
 
@@ -38,7 +38,7 @@ while getopts 'i:s:p:v:' OPT; do
 done
 
 if [ -z "$VOLUME" ]; then
-    VOLUME=/tmp/higlass-docker/volume-$STAMP-with-redis
+    VOLUME=/tmp/ctracks-docker/volume-$STAMP-with-redis
 fi
 
 docker network create --driver bridge network-$STAMP

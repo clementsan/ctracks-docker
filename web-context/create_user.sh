@@ -8,4 +8,4 @@ if [ -z $USERNAME ] || [ -z $PASSWORD ]; then
 fi
 
 echo "import django.contrib.auth; django.contrib.auth.models.User.objects.create_user('$USERNAME', password='$PASSWORD')" \
-     | python /home/higlass/projects/higlass-server/manage.py shell
+     | python /home/theuser/projects/higlass-server/manage.py shell
