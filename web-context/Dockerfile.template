@@ -26,10 +26,10 @@ RUN pip install uwsgi==2.0.14
 
 
 # Setup home directory
-RUN groupadd -r higlass && useradd -r -g higlass higlass
-WORKDIR /home/higlass
-RUN chown higlass:higlass .
-USER higlass
+RUN groupadd -r theuser && useradd -r -g theuser theuser
+WORKDIR /home/theuser
+RUN chown theuser:theuser .
+USER theuser
 
 
 # Setup server
@@ -44,41 +44,30 @@ RUN wget https://raw.githubusercontent.com/hms-dbmi/higlass-server/master/requir
 RUN pip install -r requirements.txt
 # bump
 
-WORKDIR /home/higlass/projects
-RUN chown higlass:higlass .
-USER higlass
+WORKDIR /home/theuser/projects
+RUN chown theuser:theuser .
+USER theuser
 RUN git clone --depth 1 https://github.com/hms-dbmi/higlass-server.git --branch v<SERVER_VERSION>
 USER root
 
-WORKDIR /home/higlass/projects/higlass-server
+WORKDIR /home/theuser/projects/higlass-server
 RUN python manage.py collectstatic --noinput -c
 
-WORKDIR /home/higlass/projects
+WORKDIR /home/theuser/projects
 RUN pip install -r higlass-server/requirements.txt
-USER higlass
+USER theuser
 
 # Setup website (includes client js)
-ENV CTRACKS_REPO copy-number
+ENV CTRACKS_REPO cTracks
 RUN wget https://github.com/visdesignlab/$CTRACKS_REPO/releases/download/v<CTRACKS_VERSION>/dist.zip
 RUN unzip dist.zip -d ctracks
 
 RUN pwd
 
-RUN sed -i -e s#assets/styles-third-party/hglib.css#https://unpkg.com/higlass@<LIBRARY_VERSION>/dist/styles/hglib.css#g higlass-website/index.html;
-RUN sed -i -e s#assets/styles-third-party/hglib.css#https://unpkg.com/higlass@<LIBRARY_VERSION>/dist/styles/hglib.css#g higlass-website/app/index.html;
-RUN sed -i -e s#assets/styles-third-party/hglib.css#https://unpkg.com/higlass@<LIBRARY_VERSION>/dist/styles/hglib.css#g higlass-website/demo.html;
-RUN sed -i -e s#assets/styles-third-party/hglib.css#https://unpkg.com/higlass@<LIBRARY_VERSION>/dist/styles/hglib.css#g higlass-website/test_demo.html;
-
-RUN sed -i -e s#assets/scripts-third-party/hglib.js#https://unpkg.com/higlass@<LIBRARY_VERSION>/dist/scripts/hglib.js#g higlass-website/index.html;
-RUN sed -i -e s#assets/scripts-third-party/hglib.js#https://unpkg.com/higlass@<LIBRARY_VERSION>/dist/scripts/hglib.js#g higlass-website/app/index.html;
-RUN sed -i -e s#assets/scripts-third-party/hglib.js#https://unpkg.com/higlass@<LIBRARY_VERSION>/dist/scripts/hglib.js#g higlass-website/demo.html;
-RUN sed -i -e s#assets/scripts-third-party/hglib.js#https://unpkg.com/higlass@<LIBRARY_VERSION>/dist/scripts/hglib.js#g higlass-website/test_demo.html;
-
 RUN ( echo "SERVER_VERSION: <SERVER_VERSION>"; \
       echo "CTRACKS_VERSION: <CTRACKS_VERSION>"; \
-      echo "LIBRARY_VERSION: <LIBRARY_VERSION>"; \
       ) \
-    > higlass-website/version.txt
+    > ctracks/version.txt
 
 
 # Setup supervisord and nginx
