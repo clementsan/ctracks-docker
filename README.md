@@ -1,22 +1,20 @@
-# higlass-docker
+# ctracks-docker
 
-Builds a docker container wrapping higlass-client and higlass-server in nginx,
+Builds a docker container wrapping ctracks-app and higlass-server in nginx,
 tests that it works, and if there are no errors in the PR, pushes the image to 
-[DockerHub](https://hub.docker.com/r/gehlenborglab/higlass/).
+[DockerHub](https://hub.docker.com/r/visdesignlab/ctracks/).
 
 ## Running locally
 
-You can see HiGlass in action at [higlass.io](http://higlass.io/).
-
-It is also easy to launch your own. Install Docker, and then:
+To run locally, install Docker, and then:
 ```bash
-docker pull gehlenborglab/higlass # Ensure that you have the latest.
+docker pull visdesignlab/ctracks # Ensure that you have the latest.
 docker run --detach \
            --publish 8888:80 \
            --volume ~/hg-data:/data \
            --volume ~/hg-tmp:/tmp \
-           --name higlass-container \
-           gehlenborglab/higlass
+           --name ctracks-container \
+           visdesignlab/ctracks
 ```
 The two `--volume` options are necessary to prevent the files you upload from consuming
 all of relatively small space allocated for the root volume.
@@ -29,10 +27,10 @@ COOLER=dixon2012-h1hesc-hindiii-allreps-filtered.1000kb.multires.cool
 wget -P ~/hg-tmp https://s3.amazonaws.com/pkerp/public/$COOLER
 
 # Confirm that the file is visible inside the container:
-docker exec higlass-container ls /tmp
+docker exec ctracks-container ls /tmp
 
 # Ingest:
-docker exec higlass-container python higlass-server/manage.py ingest_tileset --filename /tmp/$COOLER --filetype cooler --datatype matrix
+docker exec ctracks-container python higlass-server/manage.py ingest_tileset --filename /tmp/$COOLER --filetype cooler --datatype matrix
 ```
 
 You can now hit the API to confirm that the file was ingested successfully:
@@ -45,11 +43,11 @@ curl http://localhost:8888/api/v1/tiles/?d=$ID.0.0.0
 
 ### Django admin interface
 
-The admin interface lets you interact with and inspect the data stored in the local higlass instance.
+The admin interface lets you interact with and inspect the data stored in the local ctracks instance.
 To access the admin interface you need to first create an admin user:
 
 ```bash
-docker exec -it higlass-container higlass-server/manage.py createsuperuser
+docker exec -it ctracks-container higlass-server/manage.py createsuperuser
 ```
 
 The admin interface can then be accessed at: `http://localhost:8888/admin/`
@@ -61,7 +59,7 @@ want other containers for nginx, redis, etc. Docker Compose is the usual tool
 for this, but at the present it does not support an analog to the `--from-cache`
 option. Instead, for the moment, we are doing this:
 ```
-curl https://raw.githubusercontent.com/hms-dbmi/higlass-docker/start_production.sh | bash
+curl https://raw.githubusercontent.com/visdesignlab/ctracks-docker/start_production.sh | bash
 ```
 
 For more details, read [README-DEPLOY](README-DEPLOY.md).
@@ -69,7 +67,7 @@ For more details, read [README-DEPLOY](README-DEPLOY.md).
 
 ## Development
 
-To develop [higlass-client](https://github.com/hms-dbmi/higlass) and
+To develop [ctracks](https://github.com/visdesignlab/ctracks) and
 [higlass-server](https://github.com/hms-dbmi/higlass-server),
 check out the corresponding repos. 
 
