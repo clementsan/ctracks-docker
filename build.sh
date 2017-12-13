@@ -3,7 +3,7 @@ set -e
 
 STAMP='default'
 SERVER_VERSION='1.4.1'
-CTRACKS_VERSION='0.1.14'
+CTRACKS_VERSION='0.2.0'
 # LIBRARY_VERSION='0.9.4' # this will be specified in the CTRACKS_LIBRARY
 
 usage() {
