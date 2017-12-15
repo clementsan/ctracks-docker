@@ -1,5 +1,7 @@
 # Docker on Travis requires sudo.
 sudo: required
+dist: trusty
+group: deprecated-2017Q4
 
 install:
   # Docker 1.13 adds "--cache-from" which really speeds up our Travis builds.
