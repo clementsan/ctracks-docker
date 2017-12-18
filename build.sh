@@ -36,12 +36,11 @@ perl -pne "s/<SERVER_VERSION>/$SERVER_VERSION/g; s/<CTRACKS_VERSION>/$CTRACKS_VE
           web-context/Dockerfile.template > web-context/Dockerfile
 
 REPO=visdesignlab/ctracks
-# docker pull $REPO # Defaults to "latest", but just speeds up the build, so precise version doesn't matter.
-# docker pull $REPO # Defaults to "latest", but just speeds up the build, so precise version doesn't matter.
-#--cache-from $REPO \
-docker build --build-arg WORKERS=$WORKERS \
-             --tag image-$STAMP \
-             web-context
+docker pull $REPO # Defaults to "latest", but just speeds up the build, so precise version doesn't matter.
+docker build --cache-from $REPO \
+  --build-arg WORKERS=$WORKERS \
+  --tag image-$STAMP \
+  web-context
 
 rm web-context/Dockerfile # Ephemeral: We want to prevent folks from editing it by mistake.
 
